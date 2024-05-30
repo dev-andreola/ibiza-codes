@@ -18,4 +18,5 @@ model Client {
   name    String 
   address String
   code    Int
+  createdAt DateTime @default(now())
 }
