@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 type User = {
   id: number;
@@ -36,26 +36,27 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
 
   return (
     <>
-      {users.map((user) => (
-        <div
-          className="flex w-[500px] cursor-pointer items-center justify-between rounded-md border-2 px-4 py-2 hover:bg-gray-100"
-          key={user.id}
-        >
-          <div className="w-[420px]">
-            <h2 className="overflow-x-scroll text-xl font-bold scrollbar-none">
-              {user.name}
-            </h2>
-            <p className="overflow-x-scroll scrollbar-none">{user.address}</p>
-            <p className="overflow-x-scroll text-lg font-bold scrollbar-none">
-              {user.code}
-            </p>
+      {users.length ? (
+        users.map((user) => (
+          <div key={user.id} className="flex w-full rounded-md border-2">
+            <div className="w-3/4 px-2 py-1">
+              <h2 className="text-lg font-bold">{user.name}</h2>
+              <p className="">{user.address}</p>
+              <p className="text-xl font-bold">{user.code}</p>
+            </div>
+            <div className="flex w-1/4 items-center justify-center rounded-br-md rounded-tr-md bg-red-200 hover:bg-red-300">
+              <Trash2
+                onClick={() => handleDelete(user.id)}
+                className="text-red-600"
+              />
+            </div>
           </div>
-          <Trash
-            onClick={() => handleDelete(user.id)} // Passamos o ID do usuário a ser deletado
-            className="text-red-500 hover:text-red-700"
-          />
-        </div>
-      ))}
+        ))
+      ) : (
+        <p className="mt-4 text-center text-gray-400">
+          Nenhum cliente cadastrado.
+        </p>
+      )}
     </>
   );
 };

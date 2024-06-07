@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import UsersList from "./components/users-list";
 import { Button } from "@/components/ui/button";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, User } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -45,38 +45,47 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="relative h-screen">
-      <div className="my-3">
+    <div className="mx-auto flex h-screen max-w-6xl flex-col items-center justify-between px-2 py-6">
+      <div className="flex w-full flex-col items-center justify-start">
+        {/* TÍTULO */}
+
         <h1 className="text-center text-3xl font-bold">Ibiza Codes</h1>
+
+        {/* BARRA DE PESQUISA */}
+
         <form className="mx-auto mt-3 flex w-[300px] gap-2">
           <Input placeholder="Buscar clientes" />
           <Button size={"icon"} type="submit">
             <SearchIcon size={20} />
           </Button>
         </form>
+
+        {/* LISTA DE CLIENTES */}
       </div>
 
-      {/* USERS LIST */}
-      <div className="mx-auto flex w-[500px] flex-col gap-3">
+      <div className="my-3 flex h-full w-full flex-col gap-2 overflow-y-scroll">
         <UsersList users={users} onDelete={handleDeleteUser} />
       </div>
-      <Dialog>
-        <DialogTrigger>
-          <Button className="absolute bottom-10 left-2/4 -translate-x-2/4">
-            Cadastrar novo Código
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Cadastrar novo Código</DialogTitle>
-            <DialogDescription>
-              Insira os dados para cadastrar um novo código de cliente no banco
-              de dados.
-            </DialogDescription>
-          </DialogHeader>
-          <Form onSuccess={handleAddUser} />
-        </DialogContent>
-      </Dialog>
+
+      {/* BOTÃO DE CADASTRAR NOVO CLIENTE */}
+
+      <div className="w-full pt-2 text-center">
+        <Dialog>
+          <DialogTrigger>
+            <Button>Cadastrar novo Código</Button>
+          </DialogTrigger>
+          <DialogContent className="rounded-md">
+            <DialogHeader>
+              <DialogTitle>Cadastrar novo Código</DialogTitle>
+              <DialogDescription>
+                Insira os dados para cadastrar um novo código de cliente no
+                banco de dados.
+              </DialogDescription>
+            </DialogHeader>
+            <Form onSuccess={handleAddUser} />
+          </DialogContent>
+        </Dialog>
+      </div>
     </div>
   );
 };

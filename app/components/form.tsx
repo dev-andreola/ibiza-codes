@@ -41,6 +41,7 @@ const Form: React.FC<FormProps> = ({ onSuccess }) => {
     <form className="flex flex-col" onSubmit={handleSubmit}>
       <label htmlFor="name">Nome</label>
       <input
+        className="mb-3 rounded-sm border-2 px-2 py-1"
         type="text"
         name="name"
         value={name}
@@ -49,6 +50,7 @@ const Form: React.FC<FormProps> = ({ onSuccess }) => {
 
       <label htmlFor="address">Endereço</label>
       <input
+        className="mb-3 rounded-sm border-2 px-2 py-1"
         type="text"
         name="address"
         value={address}
@@ -57,6 +59,7 @@ const Form: React.FC<FormProps> = ({ onSuccess }) => {
 
       <label htmlFor="code">Código</label>
       <input
+        className="mb-5 rounded-sm border-2 px-2 py-1"
         type="text"
         name="code"
         value={code}
