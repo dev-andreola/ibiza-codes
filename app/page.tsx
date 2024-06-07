@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import UsersList from "./components/users-list";
 import { Button } from "@/components/ui/button";
-import { SearchIcon, User } from "lucide-react";
+import { SearchIcon, Loader } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -25,19 +25,42 @@ type User = {
 
 const Home: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchUsers();
   }, []);
 
   const fetchUsers = async () => {
+    setIsLoadingUsers(true);
     const res = await fetch("/api/user");
     const data = await res.json();
     setUsers(data.users);
+    setIsLoadingUsers(false);
   };
 
-  const handleAddUser = (newUser: User) => {
-    setUsers((prevUsers) => [...prevUsers, newUser]);
+  const handleAddUser = async (newUser: User) => {
+    try {
+      const res = await fetch("/api/user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        setUsers((prevUsers) => [...prevUsers, data.user]);
+        setIsDialogOpen(false);
+      } else {
+        console.error("Failed to add user");
+      }
+    } catch (error) {
+      console.error("Failed to add user", error);
+    } finally {
+    }
   };
 
   const handleDeleteUser = (id: number) => {
@@ -64,15 +87,24 @@ const Home: React.FC = () => {
       </div>
 
       <div className="my-3 flex h-full w-full flex-col gap-2 overflow-y-scroll">
+        {isLoadingUsers && (
+          <div className="flex h-full w-full items-center justify-center">
+            <Loader className="mb-5 h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        )}
         <UsersList users={users} onDelete={handleDeleteUser} />
       </div>
 
       {/* BOTÃO DE CADASTRAR NOVO CLIENTE */}
 
-      <div className="w-full pt-2 text-center">
-        <Dialog>
+      <div className="w-full pt-3 text-center">
+        <Dialog
+          open={isDialogOpen}
+          onOpenChange={(isOpen) => setIsDialogOpen(isOpen)}
+        >
           <DialogTrigger>
-            <Button>Cadastrar novo Código</Button>
+            <Button disabled={isLoadingUsers}>Cadastrar novo Código</Button>
+            {isLoadingUsers && <Loader size={24} />}
           </DialogTrigger>
           <DialogContent className="rounded-md">
             <DialogHeader>
