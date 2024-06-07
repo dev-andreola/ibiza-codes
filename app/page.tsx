@@ -40,6 +40,10 @@ const Home: React.FC = () => {
     setUsers((prevUsers) => [...prevUsers, newUser]);
   };
 
+  const handleDeleteUser = (id: number) => {
+    setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+  };
+
   return (
     <div className="relative h-screen">
       <div className="my-3">
@@ -54,7 +58,7 @@ const Home: React.FC = () => {
 
       {/* USERS LIST */}
       <div className="mx-auto flex w-[500px] flex-col gap-3">
-        <UsersList users={users} />
+        <UsersList users={users} onDelete={handleDeleteUser} />
       </div>
       <Dialog>
         <DialogTrigger>
