@@ -20,13 +20,13 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const { name, addrress, code } = await req.json();
+  const { name, address, code } = await req.json();
 
   try {
     const user = await prisma.user.create({
       data: {
         name,
-        addrress,
+        address,
         code,
       },
     });
@@ -63,7 +63,7 @@ export async function DELETE(req: Request) {
 }
 
 export async function PUT(req: Request) {
-  const { id, name, addrress, code } = await req.json();
+  const { id, name, address, code } = await req.json();
   try {
     const user = await prisma.user.update({
       where: {
@@ -71,7 +71,7 @@ export async function PUT(req: Request) {
       },
       data: {
         name,
-        addrress,
+        address,
         code,
       },
     });

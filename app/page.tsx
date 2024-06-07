@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import UsersList from "./components/users-list";
 import { Button } from "@/components/ui/button";
@@ -10,10 +13,33 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Formulario from "./components/form";
+import Form from "./components/form";
 
-// Componente Home
-const Home = async () => {
+type User = {
+  id: number;
+  name: string;
+  address: string;
+  code: string;
+  createdAt: string;
+};
+
+const Home: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    const res = await fetch("/api/user");
+    const data = await res.json();
+    setUsers(data.users);
+  };
+
+  const handleAddUser = (newUser: User) => {
+    setUsers((prevUsers) => [...prevUsers, newUser]);
+  };
+
   return (
     <div className="relative h-screen">
       <div className="my-3">
@@ -28,7 +54,7 @@ const Home = async () => {
 
       {/* USERS LIST */}
       <div className="mx-auto flex w-[500px] flex-col gap-3">
-        <UsersList />
+        <UsersList users={users} />
       </div>
       <Dialog>
         <DialogTrigger>
@@ -44,7 +70,7 @@ const Home = async () => {
               de dados.
             </DialogDescription>
           </DialogHeader>
-          <Formulario />
+          <Form onSuccess={handleAddUser} />
         </DialogContent>
       </Dialog>
     </div>

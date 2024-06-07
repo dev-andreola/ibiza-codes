@@ -1,13 +1,18 @@
-import prisma from "@/lib/db";
+"use client";
 
-// Função para buscar usuários do banco de dados
-const fetchUsers = async () => {
-  const users = await prisma.user.findMany();
-  return users;
+type User = {
+  id: number;
+  name: string;
+  address: string;
+  code: string;
+  createdAt: string;
 };
 
-const UsersList = async () => {
-  const users = await fetchUsers();
+type UsersListProps = {
+  users: User[];
+};
+
+const UsersList: React.FC<UsersListProps> = ({ users }) => {
   return (
     <>
       {users.map((user) => (
@@ -16,7 +21,7 @@ const UsersList = async () => {
           key={user.id}
         >
           <h2 className="text-xl font-bold">{user.name}</h2>
-          <p>{user.addrress}</p>
+          <p>{user.address}</p>
           <p className="text-lg font-bold">{user.code}</p>
         </div>
       ))}
