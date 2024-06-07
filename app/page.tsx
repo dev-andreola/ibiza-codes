@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Input } from "@/components/ui/input";
 import UsersList from "./components/users-list";
 import { Button } from "@/components/ui/button";
 import { SearchIcon, Loader } from "lucide-react";
@@ -14,6 +13,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Form from "./components/form";
+import { Input } from "@/components/ui/input";
 
 type User = {
   id: number;
@@ -59,7 +59,6 @@ const Home: React.FC = () => {
       }
     } catch (error) {
       console.error("Failed to add user", error);
-    } finally {
     }
   };
 
@@ -104,7 +103,6 @@ const Home: React.FC = () => {
         >
           <DialogTrigger>
             <Button disabled={isLoadingUsers}>Cadastrar novo Código</Button>
-            {isLoadingUsers && <Loader size={24} />}
           </DialogTrigger>
           <DialogContent className="rounded-md">
             <DialogHeader>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
 
 type FormProps = {
   // eslint-disable-next-line no-unused-vars
@@ -13,6 +14,8 @@ const Form: React.FC<FormProps> = ({ onSuccess }) => {
   const [name, setName] = useState<string>("");
   const [address, setAddress] = useState<string>("");
   const [code, setCode] = useState<string>("");
+
+  const { toast } = useToast();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -31,10 +34,15 @@ const Form: React.FC<FormProps> = ({ onSuccess }) => {
     if (res.ok) {
       const data = await res.json();
       onSuccess(data.user);
+      setIsLoading(false);
       setName("");
       setAddress("");
       setCode("");
-      setIsLoading(false);
+      toast({
+        title: "Sucesso!",
+        description: "Cliente adicionado com sucesso!",
+      });
+
       console.log("User created successfully");
     } else {
       console.error("Failed to create user");
