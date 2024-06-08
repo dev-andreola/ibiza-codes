@@ -42,11 +42,11 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
             <p className="">{user.address}</p>
             <p className="text-xl font-bold">{user.code}</p>
           </div>
-          <div className="flex w-1/4 items-center justify-center rounded-br-md rounded-tr-md bg-red-200 hover:bg-red-300">
-            <Trash2
-              onClick={() => handleDelete(user.id)}
-              className="text-red-600"
-            />
+          <div
+            onClick={() => handleDelete(user.id)}
+            className="flex w-1/4 cursor-pointer items-center justify-center rounded-br-md rounded-tr-md bg-red-200 hover:bg-red-300"
+          >
+            <Trash2 className="text-red-600" />
           </div>
         </div>
       ))}
