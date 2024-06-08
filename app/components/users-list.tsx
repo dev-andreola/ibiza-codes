@@ -33,7 +33,7 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
 
   const { toast } = useToast();
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id: number | undefined) => {
     setIsLoading(true);
     const res = await fetch("/api/user", {
       method: "DELETE",
@@ -100,7 +100,7 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
                 </Button>
                 <Button
                   className="w-2/4 bg-red-600 hover:bg-red-700"
-                  onClick={() => handleDelete(user.id)}
+                  onClick={() => handleDelete(selectedUser?.id)}
                 >
                   Sim
                 </Button>
