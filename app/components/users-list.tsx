@@ -29,6 +29,7 @@ type UsersListProps = {
 const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
 
   const { toast } = useToast();
 
@@ -55,6 +56,11 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
     }
   };
 
+  const openDeleteDialog = (user: User) => {
+    setSelectedUser(user);
+    setIsDialogOpen(true);
+  };
+
   return (
     <>
       {users.map((user) => (
@@ -65,14 +71,17 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
             <p className="text-xl font-bold">{user.code}</p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger className="flex w-1/4 cursor-pointer items-center justify-center rounded-br-sm rounded-tr-sm bg-red-200 hover:bg-red-300">
+            <DialogTrigger
+              onClick={() => openDeleteDialog(user)}
+              className="flex w-1/4 cursor-pointer items-center justify-center rounded-br-sm rounded-tr-sm bg-red-200 hover:bg-red-300"
+            >
               <div>
                 <Trash2 className="text-red-600" />
               </div>
             </DialogTrigger>
             <DialogContent className="w-[350px] rounded-md">
               <DialogTitle>
-                Tem certeza que deseja deletar o cliente {user.name}?
+                Tem certeza que deseja deletar o cliente {selectedUser?.name}?
               </DialogTitle>
               <DialogDescription>
                 O cliente será apagado <strong>permanentemente</strong>!
