@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import UsersList from "./components/users-list";
 import { Button } from "@/components/ui/button";
-import { SearchIcon, Loader } from "lucide-react";
+import { SearchIcon, Loader, UserPlus, Bike } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import Form from "./components/form";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 type User = {
   id: number;
@@ -96,17 +97,35 @@ const Home: React.FC = () => {
 
       {/* BOTÃO DE CADASTRAR NOVO CLIENTE */}
 
-      <div className="w-full pt-3 text-center">
+      <div className="flex w-full items-center justify-center gap-3 pt-3 text-center">
+        <Link
+          target="_blank"
+          href={"https://confirmacao-entrega-propria.ifood.com.br/"}
+        >
+          <Button className="flex h-11 items-center justify-center gap-2 bg-red-600 text-left hover:bg-red-700">
+            <Bike />
+            Confirmar
+            <br />
+            código iFood
+          </Button>
+        </Link>
         <Dialog
           open={isDialogOpen}
           onOpenChange={(isOpen) => setIsDialogOpen(isOpen)}
         >
           <DialogTrigger>
-            <Button disabled={isLoadingUsers}>Cadastrar novo Código</Button>
+            <Button
+              className="flex h-11 items-center justify-center gap-2 text-left"
+              disabled={isLoadingUsers}
+            >
+              <UserPlus /> Cadastrar
+              <br />
+              novo cliente
+            </Button>
           </DialogTrigger>
           <DialogContent className="rounded-md">
             <DialogHeader>
-              <DialogTitle>Cadastrar novo Código</DialogTitle>
+              <DialogTitle>Cadastrar novo Cliente</DialogTitle>
               <DialogDescription>
                 Insira os dados para cadastrar um novo código de cliente no
                 banco de dados.
