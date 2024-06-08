@@ -39,7 +39,7 @@ const Form: React.FC<FormProps> = ({ onSuccess }) => {
       setAddress("");
       setCode("");
       toast({
-        title: "Sucesso!",
+        title: "Adicionado!",
         description: "Cliente adicionado com sucesso!",
       });
 

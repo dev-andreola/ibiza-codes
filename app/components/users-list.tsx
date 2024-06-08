@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
 import { Loader, Trash2 } from "lucide-react";
 import { useState } from "react";
 
@@ -29,6 +30,8 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const { toast } = useToast();
+
   const handleDelete = async (id: number) => {
     setIsLoading(true);
     const res = await fetch("/api/user", {
@@ -43,6 +46,10 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
       onDelete(id);
       setIsLoading(false);
       setIsDialogOpen(false);
+      toast({
+        title: "Deletado!",
+        description: "Cliente deletado com sucesso!",
+      });
     } else {
       console.error("Failed to delete user");
     }
@@ -65,7 +72,7 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
             </DialogTrigger>
             <DialogContent className="w-[350px] rounded-md">
               <DialogTitle>
-                Tem certeza que deseja apagar o cliente {user.name}?
+                Tem certeza que deseja deletar o cliente {user.name}?
               </DialogTitle>
               <DialogDescription>
                 O cliente será apagado <strong>permanentemente</strong>!
