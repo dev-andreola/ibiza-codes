@@ -1,6 +1,15 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Loader, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 type User = {
   id: number;
@@ -17,7 +26,11 @@ type UsersListProps = {
 };
 
 const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleDelete = async (id: number) => {
+    setIsLoading(true);
     const res = await fetch("/api/user", {
       method: "DELETE",
       headers: {
@@ -28,6 +41,8 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
 
     if (res.ok) {
       onDelete(id);
+      setIsLoading(false);
+      setIsDialogOpen(false);
     } else {
       console.error("Failed to delete user");
     }
@@ -42,12 +57,40 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
             <p className="">{user.address}</p>
             <p className="text-xl font-bold">{user.code}</p>
           </div>
-          <div
-            onClick={() => handleDelete(user.id)}
-            className="flex w-1/4 cursor-pointer items-center justify-center rounded-br-md rounded-tr-md bg-red-200 hover:bg-red-300"
-          >
-            <Trash2 className="text-red-600" />
-          </div>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger className="flex w-1/4 cursor-pointer items-center justify-center rounded-br-sm rounded-tr-sm bg-red-200 hover:bg-red-300">
+              <div>
+                <Trash2 className="text-red-600" />
+              </div>
+            </DialogTrigger>
+            <DialogContent className="w-[350px] rounded-md">
+              <DialogTitle>
+                Tem certeza que deseja apagar o cliente {user.name}?
+              </DialogTitle>
+              <DialogDescription>
+                O cliente será apagado <strong>permanentemente</strong>!
+              </DialogDescription>
+              {isLoading && (
+                <div className="flex h-full w-full items-center justify-center">
+                  <Loader className="h-6 w-6 animate-spin text-muted-foreground" />
+                </div>
+              )}
+              <div className="flex w-full gap-2">
+                <Button
+                  className="w-2/4"
+                  onClick={() => setIsDialogOpen(false)}
+                >
+                  Não
+                </Button>
+                <Button
+                  className="w-2/4 bg-red-600 hover:bg-red-700"
+                  onClick={() => handleDelete(user.id)}
+                >
+                  Sim
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       ))}
     </>

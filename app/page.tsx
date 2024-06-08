@@ -26,7 +26,7 @@ type User = {
 
 const Home: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
-  const [isLoadingUsers, setIsLoadingUsers] = useState(false);
+  const [isLoadingUsers, setIsLoadingUsers] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
@@ -34,7 +34,6 @@ const Home: React.FC = () => {
   }, []);
 
   const fetchUsers = async () => {
-    setIsLoadingUsers(true);
     const res = await fetch("/api/user");
     const data = await res.json();
     setUsers(data.users);
@@ -87,6 +86,11 @@ const Home: React.FC = () => {
       </div>
 
       <div className="my-3 flex h-full w-full flex-col gap-2 overflow-y-scroll">
+        {!isLoadingUsers && users.length == 0 && (
+          <p className="mt-4 text-center text-sm text-gray-400">
+            Nenhum cliente cadastrado!
+          </p>
+        )}
         {isLoadingUsers && (
           <div className="flex h-full w-full items-center justify-center">
             <Loader className="mb-5 h-6 w-6 animate-spin text-muted-foreground" />
@@ -102,7 +106,10 @@ const Home: React.FC = () => {
           target="_blank"
           href={"https://confirmacao-entrega-propria.ifood.com.br/"}
         >
-          <Button className="flex h-11 items-center justify-center gap-2 bg-red-600 text-left hover:bg-red-700">
+          <Button
+            disabled={isLoadingUsers}
+            className="flex h-12 items-center justify-center gap-2 bg-red-600 text-left hover:bg-red-700"
+          >
             <Bike />
             Confirmar
             <br />
@@ -115,7 +122,7 @@ const Home: React.FC = () => {
         >
           <DialogTrigger>
             <Button
-              className="flex h-11 items-center justify-center gap-2 text-left"
+              className="flex h-12 items-center justify-center gap-2 text-left"
               disabled={isLoadingUsers}
             >
               <UserPlus /> Cadastrar
