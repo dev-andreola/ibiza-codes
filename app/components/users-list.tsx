@@ -33,7 +33,11 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
 
   const { toast } = useToast();
 
-  const handleDelete = async (id: number | undefined) => {
+  const handleDelete = async (id: number) => {
+    if (typeof id !== "number") {
+      console.error("User ID is not a number");
+      return;
+    }
     setIsLoading(true);
     const res = await fetch("/api/user", {
       method: "DELETE",
@@ -59,6 +63,14 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
   const openDeleteDialog = (user: User) => {
     setSelectedUser(user);
     setIsDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedUser && typeof selectedUser.id === "number") {
+      handleDelete(selectedUser.id);
+    } else {
+      console.error("Selected user or user ID is invalid");
+    }
   };
 
   return (
@@ -95,12 +107,14 @@ const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
                 <Button
                   className="w-2/4"
                   onClick={() => setIsDialogOpen(false)}
+                  disabled={isLoading}
                 >
                   Não
                 </Button>
                 <Button
                   className="w-2/4 bg-red-600 hover:bg-red-700"
-                  onClick={() => handleDelete(selectedUser?.id)}
+                  onClick={confirmDelete}
+                  disabled={isLoading}
                 >
                   Sim
                 </Button>
