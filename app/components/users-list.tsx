@@ -29,11 +29,11 @@ type UsersListProps = {
 const UsersList: React.FC<UsersListProps> = ({ users, onDelete }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<User>(null);
 
   const { toast } = useToast();
 
-  const handleDelete = async (id: number | undefined) => {
+  const handleDelete = async (id: number) => {
     setIsLoading(true);
     const res = await fetch("/api/user", {
       method: "DELETE",
